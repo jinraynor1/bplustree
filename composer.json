@@ -1,0 +1,27 @@
+{
+  "name": "vendor_name/bplustree",
+  "description": "description",
+  "minimum-stability": "stable",
+  "config": {
+    "platform": {
+      "php": "5.3.3"
+    }
+  },
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "JATAUJE",
+      "email": "email@example.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Jinraynjor1\\BplusTree\\": "src/"
+    },
+    "files": [ "src/constants.php", "src/functions.php"]
+
+  },
+  "require": {
+    "phpunit/phpunit": "^4.8"
+  }
+}
