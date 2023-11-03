@@ -1,4 +1,10 @@
 <?php
+/**
+ * Mimics python substrint style
+ * @param $input
+ * @param $slice
+ * @return false|string
+ */
 function py_slice($input, $slice) {
     $arg = explode(':', $slice);
     $start = intval($arg[0]);

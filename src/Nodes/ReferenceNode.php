@@ -1,0 +1,46 @@
+<?php
+
+
+namespace Jinraynjor1\BplusTree\Nodes;
+
+
+use Jinraynjor1\BplusTree\Entries\Entry;
+use Jinraynjor1\BplusTree\Entries\Reference;
+use Jinraynjor1\BplusTree\TreeConf;
+
+class ReferenceNode extends Node
+{
+    public function __construct(TreeConf $treeConf, $data = null, $page = null, $parent = null, $nextPage = null)
+    {
+        $this->entry_class = Reference::class;
+        parent::__construct($treeConf, $data, $page, $parent, $nextPage);
+    }
+
+    public function numChildren()
+    {
+        return $this->entries ? count($this->entries) + 1 : 0;
+    }
+
+    /**
+     * @param Reference|Entry $entry
+     */
+    public function insertEntry(Entry $entry)
+    {
+        /*
+        Make sure that after of a reference matches before of the next one.
+        Probably very inefficient approach.
+        */
+        parent::insertEntry($entry);
+        $i = array_search($entry, $this->entries);
+        if ($i > 0) {
+            $previous_entry = $this->entries[$i - 1];
+            $previous_entry->after = $entry->before;
+        }
+        if (!isset($this->entries[$i + 1]))
+            return;
+
+        $next_entry = $this->entries[$i + 1];
+        $next_entry->before = $entry->after;
+
+    }
+}

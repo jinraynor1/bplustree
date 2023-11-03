@@ -23,6 +23,11 @@ class OpaqueData extends Entry
         $this->data = $data;
     }
 
+    public static function createFromData(TreeConf $treeConf, $data)
+    {
+        return new self($treeConf,  $data);
+    }
+
     function load($data)
     {
         $this->data = $data;

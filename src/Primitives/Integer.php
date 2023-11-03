@@ -11,8 +11,8 @@ class Integer
         $size = strlen($value);
 
         if ($size == 1) {
-            $ret = pack("c", $value);
-        } elseif ($size ==2 ) {
+            $ret = unpack("c", $value);
+        } elseif ($size >=2 && $size <=3) {
 
             if (!$unsigned && $endianness === true) {  // big-endian
                 $ret = unpack("n", $value);
@@ -24,7 +24,7 @@ class Integer
                 $ret = unpack("s", $value);
             }
 
-        } elseif ($size >= 3 && $size <=7 ) {
+        } elseif ($size >= 4 && $size <=7 ) {
 
             if (!$unsigned && $endianness === true) {  // big-endian
                 $ret = unpack("N", $value);
@@ -67,7 +67,7 @@ class Integer
 
         if ($size == 1) {
             $ret = pack("c", $value);
-        } elseif ($size ==2 ) {
+        } elseif ($size >=2 && $size <=3 ) {
 
                 if (!$unsigned && $endianness === true) {  // big-endian
                     $ret = pack("n", $value);
@@ -78,8 +78,10 @@ class Integer
                 }else{ //assume signed machine byte order
                     $ret = pack("s", $value);
                 }
+            $pad = abs(2 -$size) ;
 
-        } elseif ($size >= 3 && $size <=7 ) {
+
+        } elseif ($size >= 4 && $size <=7 ) {
 
             if (!$unsigned && $endianness === true) {  // big-endian
                 $ret = pack("N", $value);

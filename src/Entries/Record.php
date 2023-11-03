@@ -26,7 +26,7 @@ class Record extends ComparableEntry
     /**
      * @var string
      */
-    private $length;
+    public $length;
 
     public function __construct(TreeConf $treeConf, $key = null, $value = null, $data = null, $overflowPage = null)
     {

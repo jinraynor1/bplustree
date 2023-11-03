@@ -119,7 +119,7 @@ class EntryTest extends TestCase
     {
         $r1 = new Reference(self::$treeConf, 42, 1, 2);
         $data = $r1->dump();
-        $r2 = new Reference(self::$treeConf, null, null, null, $data);
+        $r2 = Reference::createFromData(self::$treeConf, $data);
         $this->assertTrue($r1->equals($r2));
         $this->assertEquals($r1->getBefore(), $r2->getBefore());
         $this->assertEquals($r1->getAfter(), $r2->getAfter());
@@ -135,7 +135,7 @@ class EntryTest extends TestCase
         $r1 = new Reference($treeConf, "foo", 1,2);
         $data = $r1->dump();
 
-        $r2 = new Reference($treeConf, null, null, null, $data);
+        $r2 =  Reference::createFromData($treeConf,  $data);
         $this->assertTrue($r1->equals($r2));
         $this->assertEquals($r1->getBefore(), $r2->getBefore());
         $this->assertEquals($r1->getAfter(), $r2->getAfter());

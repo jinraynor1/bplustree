@@ -27,7 +27,7 @@ class Reference extends ComparableEntry
     /**
      * @var float|int|mixed
      */
-    private $length;
+    public $length;
     /**
      * @var mixed|null
      */
@@ -62,6 +62,12 @@ class Reference extends ComparableEntry
             $this->after = $after;
         }
         
+    }
+
+
+    public static function createFromData(TreeConf $treeConf, $data)
+    {
+        return new self($treeConf, null, null, null, $data);
     }
     /**
      * @return mixed|null

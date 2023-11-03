@@ -39,13 +39,25 @@ class SerializerTest extends TestCase
         $this->assertSame(42,$decoded);
 
 
+        $intSerializer = new IntegerSerializer();
+        $encoded = $intSerializer->serialize(3, 3);
+        $this->assertEquals(3,strlen($encoded));
+        $this->assertSame("\x03\x00\x00",$encoded);
+        $decoded = $intSerializer->deserialize("\x03\x00\x00");
+        $this->assertSame(3,$decoded);
+
+        $intSerializer = new IntegerSerializer();
         $encoded = $intSerializer->serialize(42, 4);
         $this->assertSame("*\x00\x00\x00",$encoded);
         $decoded = $intSerializer->deserialize("*\x00\x00\x00");
         $this->assertSame(42,$decoded);
 
 
+
+
     }
+
+
 
 
 }
