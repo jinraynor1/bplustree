@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Jinraynjor1\BplusTree\Nodes;
+namespace Jinraynor1\BplusTree\Nodes;
 
 
-use Jinraynjor1\BplusTree\Entries\Record;
-use Jinraynjor1\BplusTree\TreeConf;
+use Jinraynor1\BplusTree\Entries\Record;
+use Jinraynor1\BplusTree\TreeConf;
 
 class RecordNode extends Node
 {

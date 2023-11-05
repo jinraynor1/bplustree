@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Jinraynjor1\BplusTree\Nodes;
+namespace Jinraynor1\BplusTree\Nodes;
 
 
-use Jinraynjor1\BplusTree\Entries\Entry;
-use Jinraynjor1\BplusTree\Helpers\Bisect;
-use Jinraynjor1\BplusTree\Primitives\Integer;
-use Jinraynjor1\BplusTree\TreeConf;
+use Jinraynor1\BplusTree\Entries\Entry;
+use Jinraynor1\BplusTree\Helpers\Bisect;
+use Jinraynor1\BplusTree\Primitives\Integer;
+use Jinraynor1\BplusTree\TreeConf;
 
 abstract class Node
 {
@@ -26,7 +26,7 @@ abstract class Node
     /**
      * @var mixed|null
      */
-    protected $page;
+    public $page;
     /**
      * @var mixed|null
      */

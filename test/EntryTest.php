@@ -1,12 +1,12 @@
 <?php
 
-use Jinraynjor1\BplusTree\Entries\OpaqueData;
-use Jinraynjor1\BplusTree\Entries\Reference;
-use Jinraynjor1\BplusTree\Serializer\IntegerSerializer;
-use Jinraynjor1\BplusTree\Serializer\StringSerializer;
+use Jinraynor1\BplusTree\Entries\OpaqueData;
+use Jinraynor1\BplusTree\Entries\Reference;
+use Jinraynor1\BplusTree\Serializer\IntegerSerializer;
+use Jinraynor1\BplusTree\Serializer\StringSerializer;
 use \PHPUnit\Framework\TestCase;
-use Jinraynjor1\BplusTree\Entries\Record;
-use Jinraynjor1\BplusTree\TreeConf;
+use Jinraynor1\BplusTree\Entries\Record;
+use Jinraynor1\BplusTree\TreeConf;
 
 class EntryTest extends TestCase
 {

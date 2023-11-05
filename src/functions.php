@@ -1,4 +1,9 @@
 <?php
+
+function is_windows(){
+    return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+}
+
 /**
  * Mimics python substrint style
  * @param $input

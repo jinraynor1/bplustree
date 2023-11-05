@@ -1,5 +1,5 @@
 <?php
-namespace Jinraynjor1\BplusTree\Serializer;
+namespace Jinraynor1\BplusTree\Serializer;
 
 class StringSerializer implements SerializerInterface
 {

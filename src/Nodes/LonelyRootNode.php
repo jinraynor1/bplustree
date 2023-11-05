@@ -1,17 +1,17 @@
 <?php
 
 
-namespace Jinraynjor1\BplusTree\Nodes;
+namespace Jinraynor1\BplusTree\Nodes;
 
 
-use Jinraynjor1\BplusTree\TreeConf;
+use Jinraynor1\BplusTree\TreeConf;
 
 /**
  * A Root node that holds records.
  * It is an exception for when there is only a single node in the tree.
  *
  * Class LonelyRootNode
- * @package Jinraynjor1\BplusTree\Nodes
+ * @package Jinraynor1\BplusTree\Nodes
  */
 class LonelyRootNode extends RecordNode
 {

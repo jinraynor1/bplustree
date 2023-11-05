@@ -1,9 +1,9 @@
 <?php
 
-namespace Jinraynjor1\BplusTree\Serializer;
+namespace Jinraynor1\BplusTree\Serializer;
 
 
-use Jinraynjor1\BplusTree\Primitives\Integer;
+use Jinraynor1\BplusTree\Primitives\Integer;
 
 class IntegerSerializer implements SerializerInterface
 {

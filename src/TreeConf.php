@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Jinraynjor1\BplusTree;
+namespace Jinraynor1\BplusTree;
 
 
-use Jinraynjor1\BplusTree\Serializer\SerializerInterface;
+use Jinraynor1\BplusTree\Serializer\SerializerInterface;
 
 class TreeConf
 {

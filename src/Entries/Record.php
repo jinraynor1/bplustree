@@ -1,17 +1,17 @@
 <?php
 
 
-namespace Jinraynjor1\BplusTree\Entries;
+namespace Jinraynor1\BplusTree\Entries;
 
 
-use Jinraynjor1\BplusTree\Primitives\Byte;
-use Jinraynjor1\BplusTree\TreeConf;
-use Jinraynjor1\BplusTree\Primitives\Integer;
+use Jinraynor1\BplusTree\Primitives\Byte;
+use Jinraynor1\BplusTree\TreeConf;
+use Jinraynor1\BplusTree\Primitives\Integer;
 
 /**
  * A container for the actual data the tree stores
  * Class Record
- * @package Jinraynjor1\BplusTree\Entries
+ * @package Jinraynor1\BplusTree\Entries
  */
 class Record extends ComparableEntry
 {

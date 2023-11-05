@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Jinraynjor1\BplusTree\Nodes;
+namespace Jinraynor1\BplusTree\Nodes;
 
 
-use Jinraynjor1\BplusTree\Entries\OpaqueData;
-use Jinraynjor1\BplusTree\TreeConf;
+use Jinraynor1\BplusTree\Entries\OpaqueData;
+use Jinraynor1\BplusTree\TreeConf;
 
 class OverflowNode extends Node
 {

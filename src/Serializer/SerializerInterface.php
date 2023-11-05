@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Jinraynjor1\BplusTree\Serializer;
+namespace Jinraynor1\BplusTree\Serializer;
 
 
 interface SerializerInterface

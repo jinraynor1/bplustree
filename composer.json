@@ -16,12 +16,16 @@
   ],
   "autoload": {
     "psr-4": {
-      "Jinraynjor1\\BplusTree\\": "src/"
+      "Jinraynor1\\BplusTree\\": "src/"
     },
     "files": [ "src/constants.php", "src/functions.php"]
 
   },
+  "require-dev": {
+    "phpunit/phpunit": "^4.8",
+    "php-mock/php-mock": "^0.1.1"
+  },
   "require": {
-    "phpunit/phpunit": "^4.8"
+    "psr/log": "^1.1"
   }
 }

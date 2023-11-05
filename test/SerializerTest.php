@@ -2,8 +2,8 @@
 
 
 use PHPUnit\Framework\TestCase;
-use Jinraynjor1\BplusTree\Serializer\StringSerializer;
-use Jinraynjor1\BplusTree\Serializer\IntegerSerializer;
+use Jinraynor1\BplusTree\Serializer\StringSerializer;
+use Jinraynor1\BplusTree\Serializer\IntegerSerializer;
 
 class SerializerTest extends TestCase
 {

@@ -1,0 +1,6 @@
+<phpunit bootstrap="./bootstrap.php">
+    <php>
+        <const name="FILENAME" value="/tmp/bplustree-testfile.index"/>
+    </php>
+
+</phpunit>

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Jinraynjor1\BplusTree\Entries;
+namespace Jinraynor1\BplusTree\Entries;
 
 
 abstract class Entry

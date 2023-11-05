@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Jinraynjor1\BplusTree\Primitives;
+namespace Jinraynor1\BplusTree\Primitives;
 
 
 class Integer

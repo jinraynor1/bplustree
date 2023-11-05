@@ -1,17 +1,17 @@
 <?php
 
 
-namespace Jinraynjor1\BplusTree\Entries;
+namespace Jinraynor1\BplusTree\Entries;
 
 
-use Jinraynjor1\BplusTree\Primitives\Byte;
-use Jinraynjor1\BplusTree\Primitives\Integer;
-use Jinraynjor1\BplusTree\TreeConf;
+use Jinraynor1\BplusTree\Primitives\Byte;
+use Jinraynor1\BplusTree\Primitives\Integer;
+use Jinraynor1\BplusTree\TreeConf;
 
 /**
  * A container for a reference to other nodes.
  * Class Reference
- * @package Jinraynjor1\BplusTree\Entries
+ * @package Jinraynor1\BplusTree\Entries
  */
 class Reference extends ComparableEntry
 {

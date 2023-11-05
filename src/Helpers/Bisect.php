@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Jinraynjor1\BplusTree\Helpers;
+namespace Jinraynor1\BplusTree\Helpers;
 use Exception;
-use Jinraynjor1\BplusTree\Entries\ComparableEntry;
+use Jinraynor1\BplusTree\Entries\ComparableEntry;
 
 class Bisect
 {

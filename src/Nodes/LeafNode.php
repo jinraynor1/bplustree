@@ -1,15 +1,15 @@
 <?php
 
 
-namespace Jinraynjor1\BplusTree\Nodes;
+namespace Jinraynor1\BplusTree\Nodes;
 
-use Jinraynjor1\BplusTree\TreeConf;
+use Jinraynor1\BplusTree\TreeConf;
 
 /**
  * Node that holds the actual records within the tree
  *
  * Class LeafNode
- * @package Jinraynjor1\BplusTree\Nodes
+ * @package Jinraynor1\BplusTree\Nodes
  */
 class LeafNode extends RecordNode
 {

@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Jinraynjor1\BplusTree\Entries;
+namespace Jinraynor1\BplusTree\Entries;
 
 /**
  * Entry that can be sorted against other entries based on their key
  * Class ComparableEntry
- * @package Jinraynjor1\BplusTree\Entries
+ * @package Jinraynor1\BplusTree\Entries
  */
 abstract class ComparableEntry extends Entry
 {

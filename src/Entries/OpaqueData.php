@@ -1,15 +1,15 @@
 <?php
 
 
-namespace Jinraynjor1\BplusTree\Entries;
+namespace Jinraynor1\BplusTree\Entries;
 
 
-use Jinraynjor1\BplusTree\TreeConf;
+use Jinraynor1\BplusTree\TreeConf;
 
 /**
  * Entry holding opaque data
  * Class OpaqueData
- * @package Jinraynjor1\BplusTree\Entries
+ * @package Jinraynor1\BplusTree\Entries
  */
 class OpaqueData extends Entry
 {
