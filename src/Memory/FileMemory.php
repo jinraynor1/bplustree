@@ -4,6 +4,7 @@
 namespace Jinraynor1\BplusTree\Memory;
 
 
+use ErrorException;
 use Jinraynor1\BplusTree\Exceptions\ReachedEndOfFile;
 use Jinraynor1\BplusTree\Exceptions\ValueError;
 use Jinraynor1\BplusTree\Nodes\FreeListNode;
@@ -58,7 +59,7 @@ class FileMemory
      * @var LoggerInterface
      */
     private $logger;
-    private $last_page;
+    public $last_page;
 
     public function __construct($filename, TreeConf $treeConf, $cacheSize = 512)
     {
@@ -153,7 +154,7 @@ class FileMemory
             call_user_func($callback);
 
             $this->wal->commit();
-        } catch (\Exception $e) {
+        } catch (ErrorException $e) {
             # When an error happens in the middle of a write
             # transaction we must roll it back and clear the cache
             # because the writer may have partially modified the Nodes
@@ -319,10 +320,11 @@ class FileMemory
         $that = $this;
         $this->wal->checkpoint(function ($page, $pageData) use ($that, $reopen_wal) {
             $that->writePageInTree($page, $pageData, false);
-            File::fsync_file_and_dir($this->fd, $this->dir_fd);
-            if ($reopen_wal)
-                $this->wal = new WAL($that->filename, $that->treeConf->getPageSize());
+
         });
+        File::fsync_file_and_dir($this->fd, $this->dir_fd);
+        if ($reopen_wal)
+            $this->wal = new WAL($that->filename, $that->treeConf->getPageSize());
 
     }
 

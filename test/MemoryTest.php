@@ -289,7 +289,7 @@ class MemoryTest extends \PHPUnit\Framework\TestCase
 
             $that->assertTrue($mem->wal->notCommitedPages == array(3 => 9));
             $that->assertTrue($mem->wal->committedPages == array());
-            throw new ValueError("Foo");
+            throw new ErrorException("Foo");
         });
 
         $that->assertTrue($mem->wal->notCommitedPages == array());

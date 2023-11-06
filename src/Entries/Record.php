@@ -224,8 +224,9 @@ class Record extends ComparableEntry
 
     function dump()
     {
-        if ($this->data)
+        if ($this->data){
             return $this->data;
+        }
 
         if (!(is_null($this->value) or is_null($this->overflowPage))) {
             throw new \RuntimeException("value or overflow must be none");

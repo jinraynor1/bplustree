@@ -5,6 +5,8 @@ namespace Jinraynor1\BplusTree\Nodes;
 
 
 use Jinraynor1\BplusTree\Entries\Entry;
+use Jinraynor1\BplusTree\Exceptions\IndexError;
+use Jinraynor1\BplusTree\Exceptions\ValueError;
 use Jinraynor1\BplusTree\Helpers\Bisect;
 use Jinraynor1\BplusTree\Primitives\Integer;
 use Jinraynor1\BplusTree\TreeConf;
@@ -30,7 +32,7 @@ abstract class Node
     /**
      * @var mixed|null
      */
-    protected  $parent;
+    public  $parent;
     /**
      * @var mixed|null
      */
@@ -172,7 +174,7 @@ abstract class Node
 
     public function canAddEntry()
     {
-        return $this->numChilden() < $this->max_children;
+        return $this->numChildren() < $this->max_children;
     }
 
     public function canDeleteEntry()
@@ -197,6 +199,9 @@ abstract class Node
 
     public function biggestEntry()
     {
+        if(!isset($this->entries[count($this->entries)-1]))
+            throw new IndexError("index does not exist");
+
         return $this->entries[count($this->entries)-1];
     }
 
@@ -251,7 +256,7 @@ abstract class Node
         if ($i != count($this->entries) && $this->entries[$i]->equals( $entry)) {
             return $i;
         }
-        throw new \Exception(sprintf("No entry for key %s", $key));
+        throw new ValueError(sprintf("No entry for key %s", $key));
 
     }
 
@@ -297,7 +302,7 @@ abstract class Node
         elseif ($node_type_int == 6)
             return new FreelistNode($treeConf, $data, $page);
         else
-            throw new \Exception('No Node with type %s exists', $node_type_int);
+            throw new \Exception(sprintf('No Node with type %s exists', $node_type_int));
         
     }
 

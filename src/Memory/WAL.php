@@ -54,8 +54,8 @@ class WAL
         );
         $this->logger = new NullLogger();
 
-        $this->filename = $filename;
-        list($this->fd, $this->dir_fd) = File::open_file_in_dir($filename);
+        $this->filename = $filename.'-wal';
+        list($this->fd, $this->dir_fd) = File::open_file_in_dir($this->filename);
         $this->pageSize = $pageSize;
         $this->committedPages = array();
         $this->notCommitedPages = array();
@@ -148,7 +148,7 @@ class WAL
         if ($frameType == FrameType::PAGE) {
             $this->notCommitedPages[$page] = $pageStart;
         } elseif ($frameType == FrameType::COMMIT) {
-            $this->committedPages += $this->notCommitedPages;
+            $this->committedPages = $this->notCommitedPages + $this->committedPages;
             $this->notCommitedPages = array();
         } elseif ($frameType == FrameType::ROLLBACK) {
             $this->notCommitedPages = array();

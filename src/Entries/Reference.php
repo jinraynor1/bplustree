@@ -189,7 +189,6 @@ class Reference extends ComparableEntry
             Integer::toBytes($this->after,PAGE_REFERENCE_BYTES, ENDIAN)
         );
 
-
     }
 
     public function represents()

@@ -4,8 +4,53 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "79360c837747cd786059b6081720c279",
+    "content-hash": "64fceaa64ee425edc4b396687c3b099f",
     "packages": [
+        {
+            "name": "ehough/generators",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ehough/generators.git",
+                "reference": "3cc63dd9d0e35934bf26fa0892de52ab99cbdd2d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ehough/generators/zipball/3cc63dd9d0e35934bf26fa0892de52ab99cbdd2d",
+                "reference": "3cc63dd9d0e35934bf26fa0892de52ab99cbdd2d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.29"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Hough\\Generators\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Eric Hough",
+                    "email": "eric@tubepress.com",
+                    "homepage": "https://github.com/ehough"
+                }
+            ],
+            "description": "Simulate generators in PHP 5.3 and 5.4. Useful for backporting code.",
+            "keywords": [
+                "generator",
+                "generators"
+            ],
+            "abandoned": true,
+            "time": "2016-12-23T20:33:37+00:00"
+        },
         {
             "name": "psr/log",
             "version": "1.1.4",
@@ -1092,7 +1137,7 @@
     "platform": [],
     "platform-dev": [],
     "platform-overrides": {
-        "php": "5.3.3"
+        "php": "5.4"
     },
     "plugin-api-version": "1.1.0"
 }

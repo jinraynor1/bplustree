@@ -27,7 +27,7 @@ class RootNode extends ReferenceNode
         parent::__construct($treeConf, $data, $page, $parent);
     }
 
-    public function converToInternal()
+    public function convertToInternal()
     {
         $internal = InternalNode::createFromArgs(array('treeConf'=>$this->treeConf, 'page'=>$this->page));
         $internal->entries = $this->entries;
