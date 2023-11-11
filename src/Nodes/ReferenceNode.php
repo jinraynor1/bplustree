@@ -39,8 +39,11 @@ class ReferenceNode extends Node
         if (!isset($this->entries[$i + 1]))
             return;
 
+        /**
+         * @var $next_entry Reference
+         */
         $next_entry = $this->entries[$i + 1];
-        $next_entry->before = $entry->after;
+        $next_entry->setBefore($entry->after) ;
 
     }
 }
