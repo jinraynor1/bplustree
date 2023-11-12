@@ -131,34 +131,28 @@ class Reference extends ComparableEntry
 
     function load($data)
     {
-        if (!(strlen($data) == $this->length)) {
-            throw new \RuntimeException("Invalid length for data");
-        }
+        assert(strlen($data) == $this->length);
 
         $end_before = PAGE_REFERENCE_BYTES;
-        $this->before = Integer::fromBytes(py_slice($data,"0:$end_before"), ENDIAN);
+        $this->before = unpack("V",substr($data,0,$end_before))[1];
 
         $end_used_key_length = $end_before + USED_KEY_LENGTH_BYTES;
 
-        $used_key_length = Integer::fromBytes(
-                py_slice($data,"$end_before:$end_used_key_length"), ENDIAN
-        );
+        $used_key_length = unpack("v",substr($data,$end_before,$end_used_key_length-$end_before))[1];
 
-        if (!((0 <= $used_key_length) && ($used_key_length <= $this->treeConf->getKeySize()))) {
-            throw new \RuntimeException("Invalid key length");
-        }
+        assert((0 <= $used_key_length) && ($used_key_length <= $this->treeConf->getKeySize()));
 
         $end_key = $end_used_key_length + $used_key_length;
 
         $this->key = $this->treeConf->getSerializer()->deserialize(
-                py_slice($data,"$end_used_key_length:$end_key")
+                substr($data,$end_used_key_length,$end_key-$end_used_key_length)
         );
 
         $start_after = $end_used_key_length + $this->treeConf->getKeySize();
 
         $end_after = $start_after + PAGE_REFERENCE_BYTES;
 
-        $this->after = Integer::fromBytes(py_slice($data,"$start_after:$end_after"), ENDIAN);
+        $this->after = Integer::fromBytes(substr($data,$start_after,$end_after-$start_after), ENDIAN);
 
     }
 
@@ -167,13 +161,9 @@ class Reference extends ComparableEntry
         if ($this->data)
             return $this->data;
 
-        if (!is_int($this->before)) {
-            throw new \RuntimeException("prop before is not an int ");
-        }
+        assert(is_int($this->before));
 
-        if (!is_int($this->after)) {
-            throw new \RuntimeException("prop after is not an int ");
-        }
+        assert(is_int($this->after));
 
         $key_as_bytes = $this->treeConf->getSerializer()->serialize(
                 $this->key, $this->treeConf->getKeySize()
