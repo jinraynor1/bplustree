@@ -171,8 +171,8 @@ class WAL
         if ($frameType != FrameType::PAGE)
             $pageData = '';
         $data = (
-            Integer::toBytes($frameType, FRAME_TYPE_BYTES, ENDIAN) .
-            Integer::toBytes($page, PAGE_REFERENCE_BYTES, ENDIAN) .
+            pack("c",$frameType) .
+            pack("V",$page) .
             $pageData
         );
         if(!is_resource($this->fd))

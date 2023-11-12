@@ -271,9 +271,7 @@ abstract class Node
         $rv = array_slice($this->entries, $offset);
         $this->entries = array_slice($this->entries, 0, $offset);
 
-        if (!(count($this->entries) + count($rv) == $len_entries)) {
-            throw new \Exception("invalid entries count");
-        }
+        assert((count($this->entries) + count($rv) == $len_entries));
         return $rv;
 
     }

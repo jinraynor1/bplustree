@@ -170,22 +170,18 @@ class Record extends ComparableEntry
     function load($data)
     {
 
-        if (!(strlen($data) == $this->length)) {
-            throw new \RuntimeException("Invalid length for data");
-        }
+        assert(strlen($data) == $this->length);
 
         $end_used_key_length = USED_KEY_LENGTH_BYTES;
-        $used_key_length = Integer::fromBytes(py_slice($data, "0:$end_used_key_length"), ENDIAN);
 
-        if (!((0 <= $used_key_length) && ($used_key_length <= $this->treeConf->getKeySize()))) {
-            throw new \RuntimeException("Invalid length for key");
-        }
+        $used_key_length = unpack("v",substr($data, 0,2))[1];
+
+        assert((0 <= $used_key_length) && ($used_key_length <= $this->treeConf->getKeySize()));
 
         $end_key = $end_used_key_length + $used_key_length;
         $this->key = $this->treeConf->getSerializer()->deserialize(
-            py_slice($data, "$end_used_key_length:$end_key")
+            substr($data, $end_used_key_length,$end_key-$end_used_key_length)
         );
-
 
         $start_used_value_length = (
             $end_used_key_length + $this->treeConf->getKeySize()
@@ -196,29 +192,27 @@ class Record extends ComparableEntry
         );
 
 
-        $used_value_length = Integer::fromBytes(
-            py_slice($data, "$start_used_value_length:$end_used_value_length"), ENDIAN
-        );
+        $used_value_length = unpack("v",
+            substr($data, $start_used_value_length,$end_used_value_length-$start_used_value_length)
+        )[1];
 
-        if (!((0 <= $used_value_length) && ($used_value_length <= $this->treeConf->getValueSize()))) {
-            throw new \RuntimeException("Invalid value length");
-        }
+        assert(((0 <= $used_value_length) && ($used_value_length <= $this->treeConf->getValueSize())));
 
 
         $end_value = $end_used_value_length + $used_value_length;
 
         $start_overflow = $end_used_value_length + $this->treeConf->getValueSize();
         $end_overflow = $start_overflow + PAGE_REFERENCE_BYTES;
-        $overflow_page = Integer::fromBytes(
-            py_slice($data, "$start_overflow:$end_overflow"), ENDIAN
-        );
+        $overflow_page = unpack("v",
+            substr($data, $start_overflow,$end_overflow-$start_overflow)
+        )[1];
 
         if ($overflow_page) {
             $this->overflowPage = $overflow_page;
             $this->value = null;
         } else {
             $this->overflowPage = null;
-            $this->value = py_slice($data, "$end_used_value_length:$end_value");
+            $this->value = substr($data, $end_used_value_length,$end_value-$end_used_value_length);
         }
     }
 
@@ -228,9 +222,7 @@ class Record extends ComparableEntry
             return $this->data;
         }
 
-        if (!(is_null($this->value) or is_null($this->overflowPage))) {
-            throw new \RuntimeException("value or overflow must be none");
-        }
+        assert(!(is_null($this->value) or is_null($this->overflowPage)));
 
         $key_as_bytes = $this->treeConf->getSerializer()->serialize(
             $this->getKey(), $this->treeConf->getKeySize()
@@ -245,13 +237,13 @@ class Record extends ComparableEntry
         $used_value_length = strlen($value);
 
         return (
-            Integer::toBytes($used_key_length, USED_VALUE_LENGTH_BYTES, ENDIAN) .
+            pack("v",$used_key_length) .
             $key_as_bytes .
-            Byte::nullPadding($this->treeConf->getKeySize() - $used_key_length) .
-            Integer::toBytes($used_value_length, USED_VALUE_LENGTH_BYTES, ENDIAN) .
+            pack("a".($this->treeConf->getKeySize() - $used_key_length), "")  .
+            pack("v",$used_value_length) .
             $value .
-            Byte::nullPadding($this->treeConf->getValueSize() - $used_value_length) .
-            Integer::toBytes($overflow_page, PAGE_REFERENCE_BYTES, ENDIAN)
+            pack("a".($this->treeConf->getValueSize() - $used_value_length), "").
+            pack("V",$overflow_page)
         );
     }
 

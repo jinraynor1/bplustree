@@ -54,64 +54,59 @@ class Integer
         return (int) $ret[1];
     }
 
-
-
     public static function toBytes($value, $size, $endianness, $unsigned = false)
     {
-        if (!is_int($size)) {
-            throw new \InvalidArgumentException("Invalid size: '$size'");
-        }
-
-        $ret = null;
         $pad = 0;
 
         if ($size == 1) {
-            $ret = pack("c", $value);
+            $format ="c";
         } elseif ($size >=2 && $size <=3 ) {
 
-                if (!$unsigned && $endianness === true) {  // big-endian
-                    $ret = pack("n", $value);
-                } else if (!$unsigned && $endianness === false) {  // little-endian
-                    $ret = pack("v", $value);
-                } else if (!$unsigned && $endianness === null) {  // machine byte order
-                    $ret = pack("S", $value);
-                }else{ //assume signed machine byte order
-                    $ret = pack("s", $value);
-                }
-            $pad = abs(2 -$size) ;
+            if (!$unsigned && $endianness === true) {  // big-endian
+                $format = "n";
+            } else if (!$unsigned && $endianness === false) {  // little-endian
+                $format = "v";
+            } else if (!$unsigned && $endianness === null) {  // machine byte order
+                $format = "S";
+            }else{ //assume signed machine byte order
+                $format = "s";
+            }
+            $pad = $size -2;
 
 
         } elseif ($size >= 4 && $size <=7 ) {
 
             if (!$unsigned && $endianness === true) {  // big-endian
-                $ret = pack("N", $value);
+                $format = "N";
             } else if (!$unsigned && $endianness === false) {  // little-endian
-                $ret = pack("V", $value);
+                $format = "V";
             } else if (!$unsigned && $endianness === null) {  // machine byte order
-                $ret = pack("L", $value);
+                $format = "L";
             }else { //assume signed machine byte order
-                $ret = pack("l", $value);
+                $format = "l";
             }
 
-            $pad = abs(4 -$size) ;
+            $pad = $size - 4  ;
 
         } elseif ($size >= 8 ) {
             if (!$unsigned && $endianness === true) {  // big-endian
-                $ret = pack("J", $value);
+                $format = "J";
             } else if (!$unsigned && $endianness === false) {  // little-endian
-                $ret = pack("P", $value);
+                $format = "P";
             } else if (!$unsigned && $endianness === null) {  // machine byte order
-                $ret = pack("Q", $value);
+                $format = "Q";
             }else { //assume signed machine byte order
-                $ret = pack("q", $value);
+                $format = "q";
             }
-            $pad = abs(8-$size);
+            $pad = $size -8;
         }
 
-        if($pad)
-            $ret.=pack("a$pad","");
 
-        return $ret;
-    }
+        return pack("{$format}a{$pad}",$value,"");
+
+
+
+
+}
 
 }

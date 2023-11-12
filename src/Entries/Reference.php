@@ -182,11 +182,12 @@ class Reference extends ComparableEntry
         $used_key_length = strlen($key_as_bytes);
 
         return (
-            Integer::toBytes($this->before,PAGE_REFERENCE_BYTES, ENDIAN) .
-            Integer::toBytes($used_key_length,USED_VALUE_LENGTH_BYTES, ENDIAN) .
-            $key_as_bytes .
-            Byte::nullPadding($this->treeConf->getKeySize() - $used_key_length) .
-            Integer::toBytes($this->after,PAGE_REFERENCE_BYTES, ENDIAN)
+            pack("V",$this->before).
+            pack("v",$used_key_length).
+            $key_as_bytes.
+            pack("a".($this->treeConf->getKeySize() - $used_key_length), "")  .
+            pack("V",$this->after)
+
         );
 
     }
