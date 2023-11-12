@@ -481,7 +481,7 @@ class BPlusTree
     {
         $node = $this->rootNode();
         while (!is_a($node, LonelyRootNode::class) &&  !is_a($node, LeafNode::class)) {
-            $node = $this->mem->getNode($node->smallestEntry()->before);
+            $node = $this->mem->getNode($node->smallestEntry()->getBefore());
         }
         return $node;
     }
@@ -500,16 +500,16 @@ class BPlusTree
         $page = null;
 
         if ($key < $node->smallestKey())
-            $page = $node->smallestEntry()->before;
+            $page = $node->smallestEntry()->getBefore();
         elseif ($node->biggestKey() <= $key)
-            $page = $node->biggestEntry()->after;
+            $page = $node->biggestEntry()->getAfter();
         else {
             $iterator = new PairWiseIterator($node->entries);
             foreach ($iterator as $chunk) {
                 $ref_a = $chunk[0];
                 $ref_b = $chunk[1];
                 if ($ref_a->key <= $key && $key < $ref_b->key) {
-                    $page = $ref_a->after;
+                    $page = $ref_a->getAfter();
                     break;
                 }
             }
@@ -564,8 +564,8 @@ class BPlusTree
         $new_node->entries = $new_entries;
 
         $ref = $new_node->popSmallest();
-        $ref->before = $old_node->page;
-        $ref->after = $new_node->page;
+        $ref->setBefore($old_node->page);
+        $ref->setAfter($new_node->page);
 
         if (is_a($old_node, RootNode::class)) {
             # Convert the Root into an Internal
