@@ -201,17 +201,17 @@ class BPlusTree
                 if (!$replace)
                     throw new  ValueError(sprintf('Key %s already exists', $key));
 
-                if ($existing_record->overflowPage)
-                    $that->deleteOverflow($existing_record->overflowPage);
+                if ($existing_record->getOverflowPage())
+                    $that->deleteOverflow($existing_record->getOverflowPage());
 
                 if (strlen($value) <= $that->treeConf->getValueSize()) {
-                    $existing_record->value = $value;
-                    $existing_record->overflowPage = null;
+                    $existing_record->setValue($value);
+                    $existing_record->setOverflowPage(null);
                 } else {
-                    $existing_record->value = null;
-                    $existing_record->overflowPage = $that->createOverflow(
+                    $existing_record->setValue(null);
+                    $existing_record->setOverflowPage( $that->createOverflow(
                         $value
-                    );
+                    ));
                 }
                 $that->mem->setNode($node);
                 return;
@@ -263,7 +263,7 @@ class BPlusTree
                 } catch (IndexError $e) {
                     $biggest_entry = null;
                 }
-                if ($biggest_entry and $key <= $biggest_entry->key)
+                if ($biggest_entry and $key <= $biggest_entry->getKey())
                     throw new  ValueError('Keys to batch insert must be sorted and ' .
                         'bigger than keys currently in the tree');
 
@@ -345,7 +345,7 @@ class BPlusTree
                 # as a method cannot return a sometimes a generator
                 # and sometimes a normal value
                 foreach ($this->iterSlice($item) as $record) {
-                    $rv[$record->key] = $this->getValueFromRecord($record);
+                    $rv[$record->getKey()] = $this->getValueFromRecord($record);
                 }
 
             } else {
@@ -508,7 +508,7 @@ class BPlusTree
             foreach ($iterator as $chunk) {
                 $ref_a = $chunk[0];
                 $ref_b = $chunk[1];
-                if ($ref_a->key <= $key && $key < $ref_b->key) {
+                if ($ref_a->getKey() <= $key && $key < $ref_b->getKey()) {
                     $page = $ref_a->getAfter();
                     break;
                 }

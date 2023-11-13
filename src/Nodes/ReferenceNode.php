@@ -34,7 +34,7 @@ class ReferenceNode extends Node
         $i = array_search($entry, $this->entries);
         if ($i > 0) {
             $previous_entry = $this->entries[$i - 1];
-            $previous_entry->getAfter() == $entry->getBefore();
+            $previous_entry->setAfter( $entry->getBefore());
         }
         if (!isset($this->entries[$i + 1]))
             return;

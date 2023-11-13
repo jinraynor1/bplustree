@@ -50,7 +50,7 @@ class ItemsIterator extends AbstractGenerator
         }else{
 
             $this->iterator->next();
-            return array($entry->key,$this->tree->getValueFromRecord($entry));
+            return array($entry->getKey(),$this->tree->getValueFromRecord($entry));
         }
 
     }

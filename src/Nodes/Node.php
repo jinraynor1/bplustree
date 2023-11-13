@@ -184,7 +184,7 @@ abstract class Node
 
     public function smallestKey()
     {
-        return $this->smallestEntry()->key;
+        return $this->smallestEntry()->getKey();
     }
 
     public function smallestEntry()
@@ -194,7 +194,7 @@ abstract class Node
 
     public function biggestKey()
     {
-        return $this->biggestEntry()->key;
+        return $this->biggestEntry()->getKey();
     }
 
     public function biggestEntry()

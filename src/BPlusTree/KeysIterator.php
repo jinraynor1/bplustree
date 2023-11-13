@@ -25,7 +25,7 @@ class KeysIterator extends ItemsIterator
         }else{
 
             $this->iterator->next();
-            return array($position,$entry->key);
+            return array($position,$entry->getKey());
         }
 
     }
