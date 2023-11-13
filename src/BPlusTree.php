@@ -6,6 +6,7 @@ namespace Jinraynor1\BplusTree;
 
 use Jinraynor1\BplusTree\BPlusTree\EntryIterator;
 use Jinraynor1\BplusTree\BPlusTree\ItemsIterator;
+use Jinraynor1\BplusTree\BPlusTree\KeysIterator;
 use Jinraynor1\BplusTree\BPlusTree\ValuesIterator;
 use Jinraynor1\BplusTree\Entries\OpaqueData;
 use Jinraynor1\BplusTree\Entries\Record;
@@ -419,7 +420,7 @@ class BPlusTree
         if(is_null($slice))
             $slice = Slice::createEmpty();
 
-        return new ValuesIterator($this,$slice);
+        return new KeysIterator($this,$slice);
     }
 
     public function items($slice = null)
