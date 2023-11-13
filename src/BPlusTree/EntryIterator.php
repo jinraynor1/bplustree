@@ -47,18 +47,30 @@ class EntryIterator extends AbstractGenerator
         }
         reset($this->node->entries);
     }
+
     protected function resume($position)
     {
-        $entry =current($this->node->entries);
+        $entry = current($this->node->entries);
 
-        if(!next($this->node->entries)){
-            if($this->node->nextPage){
+        if ($entry) {
+            if (!is_null($this->slice->start()) and $entry->key < $this->slice->start()) {
+                # continue // how to stop backwards ?
+            }
+
+            if (!is_null($this->slice->stop()) and $entry->key >= $this->slice->stop()) {
+                return null;
+            }
+        }
+
+
+        if (!next($this->node->entries)) {
+            if ($this->node->nextPage) {
                 $this->node = $this->tree->mem->getNode($this->node->nextPage);
 
-            }else{
-                if(!$entry){
+            } else {
+                if (!$entry) {
                     return null;
-                }else{
+                } else {
                     return array($position, $entry);
                 }
             }
@@ -66,9 +78,6 @@ class EntryIterator extends AbstractGenerator
         }
         return array($position, $entry);
 
-
-
-        // TODO: Implement resume() method.
     }
 
 

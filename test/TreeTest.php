@@ -158,8 +158,10 @@ class TreeTest extends TestCase
         foreach($b->iterSlice(new Slice(1, 3)) as $entry){
             $data[$entry->key] = $entry->value;
         };
+
         $this->assertTrue($data[1] == 'foo');
         $this->assertTrue($data[2] == 'bar');
+        $this->assertCount(2,$data);
 
         $data = array();
         foreach($b->iterSlice(new Slice(0, 10)) as $entry){
