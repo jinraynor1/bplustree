@@ -291,14 +291,15 @@ class FileMemory
 
         $length = 2 * PAGE_REFERENCE_BYTES + 4 * OTHERS_BYTES;
         $data = (
-            Integer::toBytes($root_node_page, PAGE_REFERENCE_BYTES, ENDIAN) .
-            Integer::toBytes($treeConf->getPageSize(), OTHERS_BYTES, ENDIAN) .
-            Integer::toBytes($treeConf->getOrder(), OTHERS_BYTES, ENDIAN) .
-            Integer::toBytes($treeConf->getKeySize(), OTHERS_BYTES, ENDIAN) .
-            Integer::toBytes($treeConf->getValueSize(), OTHERS_BYTES, ENDIAN) .
-            Integer::toBytes($this->freelist_start_page, PAGE_REFERENCE_BYTES, ENDIAN) .
-            Byte::nullPadding($treeConf->getPageSize() - $length)
+            pack("V",$root_node_page) .
+            pack("V",$treeConf->getPageSize()) .
+            pack("V",$treeConf->getOrder()) .
+            pack("V",$treeConf->getKeySize()) .
+            pack("V",$treeConf->getValueSize()) .
+            pack("V",$this->freelist_start_page ) .
+            pack("a". ($treeConf->getPageSize() - $length),"")
         );
+
         $this->writePageInTree(0, $data, true);
 
         $this->treeConf = $treeConf;

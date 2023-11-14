@@ -99,7 +99,7 @@ class WAL
 
     public function createHeader()
     {
-        $data = Integer::toBytes($this->pageSize, OTHERS_BYTES, ENDIAN);
+        $data = pack("V",$this->pageSize);
         fseek($this->fd, 0);
         File::write_to_file($this->fd, $this->dir_fd, $data, true);
     }

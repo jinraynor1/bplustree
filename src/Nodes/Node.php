@@ -143,9 +143,9 @@ abstract class Node
             $next_page = $this->nextPage;
         }
         $header = (
-            Integer::toBytes($this->node_type_int, 1, ENDIAN) .
-            Integer::toBytes($used_page_length, 3, ENDIAN) .
-            Integer::toBytes($next_page, PAGE_REFERENCE_BYTES, ENDIAN)
+            pack("c",$this->node_type_int ).
+            pack("va1",$used_page_length,"").
+            pack("V",$next_page)
         );
 
         $data = $header . $data;
