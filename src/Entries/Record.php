@@ -255,7 +255,7 @@ class Record extends ComparableEntry
 
         if ($this->value) {
             return sprintf('<Record: %s value=%s>',
-                $this->key, py_slice($this->value, "0:16"));
+                $this->key, substr($this->value, 0,16));
         }
 
         return sprintf('<Record: %s unknown value>', $this->key);

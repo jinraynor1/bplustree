@@ -249,29 +249,27 @@ class FileMemory
         }
 
         $end_root_node_page = PAGE_REFERENCE_BYTES;
-        $root_node_page = Integer::fromBytes(
-            py_slice($data, "0:$end_root_node_page"), ENDIAN
-        );
+        $root_node_page = unpack("V",substr($data, 0,$end_root_node_page))[1];
         $end_page_size = $end_root_node_page + OTHERS_BYTES;
-        $page_size = Integer::fromBytes(
-            py_slice($data, "$end_root_node_page:$end_page_size"), ENDIAN
-        );
+        $page_size = unpack("V",
+            substr($data, $end_root_node_page,$end_page_size-$end_root_node_page)
+        )[1];
 
         $end_order = $end_page_size + OTHERS_BYTES;
         $order = Integer::fromBytes(
-            py_slice($data, "$end_page_size:$end_order"), ENDIAN
+            substr($data, $end_page_size,$end_order-$end_page_size), ENDIAN
         );
         $end_key_size = $end_order + OTHERS_BYTES;
         $key_size = Integer::fromBytes(
-            py_slice($data, "$end_order:$end_key_size"), ENDIAN
+            substr($data, $end_order,$end_key_size-$end_order), ENDIAN
         );
         $end_value_size = $end_key_size + OTHERS_BYTES;
         $value_size = Integer::fromBytes(
-            py_slice($data, "$end_key_size:$end_value_size"), ENDIAN
+            substr($data, $end_key_size,$end_value_size-$end_key_size), ENDIAN
         );
         $end_freelist_start_page = $end_value_size + PAGE_REFERENCE_BYTES;
         $this->freelist_start_page = Integer::fromBytes(
-            py_slice($data, "$end_value_size:$end_freelist_start_page"), ENDIAN
+            substr($data, $end_value_size,$end_freelist_start_page-$end_value_size), ENDIAN
         );
         $this->treeConf = new TreeConf(
             $page_size, $order, $key_size, $value_size, $this->treeConf->getSerializer()

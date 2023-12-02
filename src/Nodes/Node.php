@@ -81,13 +81,13 @@ abstract class Node
 
         $end_used_page_length = NODE_TYPE_BYTES + USED_PAGE_LENGTH_BYTES;
         $used_page_length = Integer::fromBytes(
-            py_slice($data, NODE_TYPE_BYTES . ":$end_used_page_length"), ENDIAN
+            substr($data, NODE_TYPE_BYTES , $end_used_page_length-NODE_TYPE_BYTES), ENDIAN
         );
 
         $end_header = $end_used_page_length + PAGE_REFERENCE_BYTES;
 
         $this->nextPage = Integer::fromBytes(
-            py_slice($data,  "$end_used_page_length:$end_header"), ENDIAN
+            substr($data,  $end_used_page_length,$end_header-$end_used_page_length), ENDIAN
         );
 
         if ($this->nextPage == 0) {
@@ -112,7 +112,7 @@ abstract class Node
         $range = range($end_header, $used_page_length, $entry_length);
         array_pop($range);
         foreach ($range as $start_offset) {
-            $entry_data = py_slice($data, "$start_offset:" . ($start_offset + $entry_length));
+            $entry_data = substr($data, $start_offset, $entry_length);
             $entry = $entryClass::createFromData($this->treeConf, $entry_data);
             $entry->load($entry_data); # unlike py version, manually load the data
             $this->entries[] = $entry;
@@ -285,7 +285,7 @@ abstract class Node
      */
     public static function fromPageData(TreeConf $treeConf, $data, $page = null)
     {
-        $node_type_byte = py_slice($data, "0:" . NODE_TYPE_BYTES);
+        $node_type_byte = substr($data, 0 , NODE_TYPE_BYTES);
         $node_type_int = Integer::fromBytes($node_type_byte, ENDIAN);
         if ($node_type_int == 1)
             return new LonelyRootNode($treeConf, $data, $page);

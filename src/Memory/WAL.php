@@ -108,7 +108,7 @@ class WAL
     {
         fseek($this->fd, 0);
         $header_data = File::read_from_file($this->fd, 0, OTHERS_BYTES);
-        assert(Integer::fromBytes($header_data, ENDIAN) == $this->pageSize);
+        assert(unpack("V",$header_data)[1] == $this->pageSize);
 
         while (true) {
             try {
@@ -131,11 +131,8 @@ class WAL
 
         $data = File::read_from_file($this->fd, $start, $stop);
 
-        $frame_type = Integer::fromBytes(py_slice($data, "0:" . FRAME_TYPE_BYTES), ENDIAN);
-        $page = Integer::fromBytes(
-            py_slice($data, FRAME_TYPE_BYTES . ":" . (FRAME_TYPE_BYTES + PAGE_REFERENCE_BYTES)),
-            ENDIAN
-        );
+        $frame_type = unpack("c",substr($data, 0, FRAME_TYPE_BYTES))[1];
+        $page = unpack("V",substr($data, FRAME_TYPE_BYTES ,  PAGE_REFERENCE_BYTES))[1];
 
         if ($frame_type == FrameType::PAGE)
             fseek($this->fd, $stop + $this->pageSize);
