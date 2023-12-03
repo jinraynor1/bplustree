@@ -441,16 +441,10 @@ class BPlusTree
 
     public function bool()
     {
-        $that = $this;
-        $rv = false;
-        $this->mem->readTransaction(function () use ($that, &$rv) {
-            $that->iterator(function () {
-                $rv = true;
-            });
-
-        });
-
-        return $rv;
+        foreach($this->iterator() as $item){
+            return true;
+        }
+        return false;
     }
 
     public function represents()
