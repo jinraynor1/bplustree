@@ -90,7 +90,7 @@ class MemoryTest extends \PHPUnit\Framework\TestCase
 
 
         $mem->setMetadata(6, self::$treeConf);
-        assert($mem->getMetadata() == array(6, self::$treeConf));
+        $this->assertTrue($mem->getMetadata() == array(6, self::$treeConf));
     }
 
     /**

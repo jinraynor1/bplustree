@@ -80,15 +80,15 @@ abstract class Node
         }
 
         $end_used_page_length = NODE_TYPE_BYTES + USED_PAGE_LENGTH_BYTES;
-        $used_page_length = Integer::fromBytes(
-            substr($data, NODE_TYPE_BYTES , $end_used_page_length-NODE_TYPE_BYTES), ENDIAN
-        );
+        $used_page_length = unpack("v",
+            substr($data, NODE_TYPE_BYTES , $end_used_page_length-NODE_TYPE_BYTES)
+        )[1];
 
         $end_header = $end_used_page_length + PAGE_REFERENCE_BYTES;
 
-        $this->nextPage = Integer::fromBytes(
-            substr($data,  $end_used_page_length,$end_header-$end_used_page_length), ENDIAN
-        );
+        $this->nextPage = unpack("V",
+            substr($data,  $end_used_page_length,$end_header-$end_used_page_length)
+        )[1];
 
         if ($this->nextPage == 0) {
             $this->nextPage = null;
@@ -286,7 +286,7 @@ abstract class Node
     public static function fromPageData(TreeConf $treeConf, $data, $page = null)
     {
         $node_type_byte = substr($data, 0 , NODE_TYPE_BYTES);
-        $node_type_int = Integer::fromBytes($node_type_byte, ENDIAN);
+        $node_type_int = unpack("c",$node_type_byte)[1];
         if ($node_type_int == 1)
             return new LonelyRootNode($treeConf, $data, $page);
         elseif ($node_type_int == 2)

@@ -256,21 +256,21 @@ class FileMemory
         )[1];
 
         $end_order = $end_page_size + OTHERS_BYTES;
-        $order = Integer::fromBytes(
-            substr($data, $end_page_size,$end_order-$end_page_size), ENDIAN
-        );
+        $order = unpack("V",
+            substr($data, $end_page_size,$end_order-$end_page_size)
+        )[1];
         $end_key_size = $end_order + OTHERS_BYTES;
-        $key_size = Integer::fromBytes(
-            substr($data, $end_order,$end_key_size-$end_order), ENDIAN
-        );
+        $key_size = unpack("V",
+            substr($data, $end_order,$end_key_size-$end_order)
+        )[1];
         $end_value_size = $end_key_size + OTHERS_BYTES;
-        $value_size = Integer::fromBytes(
-            substr($data, $end_key_size,$end_value_size-$end_key_size), ENDIAN
-        );
+        $value_size = unpack("V",
+            substr($data, $end_key_size,$end_value_size-$end_key_size),
+        )[1];
         $end_freelist_start_page = $end_value_size + PAGE_REFERENCE_BYTES;
-        $this->freelist_start_page = Integer::fromBytes(
-            substr($data, $end_value_size,$end_freelist_start_page-$end_value_size), ENDIAN
-        );
+        $this->freelist_start_page = unpack("V",
+            substr($data, $end_value_size,$end_freelist_start_page-$end_value_size)
+        )[1];
         $this->treeConf = new TreeConf(
             $page_size, $order, $key_size, $value_size, $this->treeConf->getSerializer()
         );
