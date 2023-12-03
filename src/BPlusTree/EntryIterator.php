@@ -66,6 +66,8 @@ class EntryIterator extends AbstractGenerator
         if (!next($this->node->entries)) {
             if ($this->node->nextPage) {
                 $this->node = $this->tree->mem->getNode($this->node->nextPage);
+                reset($this->node->entries);
+
 
             } else {
                 if (!$entry) {
