@@ -119,6 +119,9 @@ class TreeTest extends TestCase
         $b->insert(1, 'baz', true);
         $this->assertTrue($b->get(1) == 'baz');
 
+        $b->setItem(1,'foo');
+        $this->assertTrue($b->get(1) =='foo');
+
     }
 
     /**
@@ -170,6 +173,7 @@ class TreeTest extends TestCase
         $this->assertTrue($data[1] == 'foo');
         $this->assertTrue($data[2] == 'bar');
         $this->assertTrue($data[5] == 'baz');
+        $this->assertCount(3,$data);
 
     }
 
@@ -217,7 +221,7 @@ class TreeTest extends TestCase
         $this->assertTrue($b->lengthHint() == 49);
         $b->insert(1, 'foo');
         $this->assertTrue($b->lengthHint() == 49);
-        #do not use more than 1000 because is too slow
+        #do not use more than 1000 because is too slow; slowness is due to pack speed
         foreach (range(2, 1000) as $i) {
             $b->insert($i, "$i");
         }
@@ -225,8 +229,135 @@ class TreeTest extends TestCase
 
         $b->close();
     }
-    
-    //todo: pending tests goes here
+
+    /**
+     * @test
+     */
+    public function boolTree()
+    {
+        $b = $this->buildBPlusTree();
+        $this->assertFalse($b->bool());
+        $b->insert(1,'foo');
+        $this->assertTrue($b->bool());
+    }
+
+    /**
+     * @test
+     */
+    public function iterKeysValuesItemsTree()
+    {
+        $b = $this->buildBPlusTree();
+
+        # Insert in reverse...
+        foreach(range(1000, 1, -1 )as  $i){
+            $b->insert($i, "$i");
+        }
+
+
+        # Test keys
+        $previous = 0;
+        foreach($b->keys() as $key){
+            $this->assertSame( $key , $previous + 1);
+            $previous++;
+        }
+
+        # Test slice keys
+        $this->assertSame(iterator_to_array($b->keys(new Slice(10, 13))) , [10, 11, 12]);
+
+        # Test .values()
+        $previous = 0;
+        foreach($b->values() as $value){
+            $this->assertSame( $value , (string)($previous + 1));
+            $previous++;
+        }
+
+        # Test slice values
+        $this->assertEquals(iterator_to_array($b->values(new Slice(10, 13))) , [10, 11, 12]);
+
+        # Test .items()
+
+
+        $previous = 0;
+        foreach($b->items() as $k=>$v){
+            $expected = $previous+1;
+            $this->assertSame( array($k,$v) , array($expected,"$expected"));
+            $previous++;
+        }
+
+        # Test slice items
+        $this->assertSame(iterator_to_array($b->items(new Slice(10, 13))) , [10=>"10", 11=>"11", 12=>"12"]);
+
+
+
+    }
+
+    /**
+     * @test
+     */
+    public function iterSlice()
+    {
+        $b = $this->buildBPlusTree();
+
+        $e= null;
+        try {
+            $b->iterSlice(new Slice(10, 0, null));
+        } catch (ValueError $e) {}
+        $this->assertNotNull($e);
+
+        foreach(range(0,9) as  $v){
+            $b->insert($v, "$v");
+        }
+
+        $iter = $b->iterSlice(new Slice(null, 2));
+        $data = iterator_to_array($iter);
+        $this->assertSame($data[0]->key,0);
+        $this->assertSame($data[1]->key,1);
+        $this->assertCount(2,$data);
+
+        $iter = $b->iterSlice(new Slice(5, 7));
+        $data = iterator_to_array($iter);
+        $this->assertSame($data[0]->key,5);
+        $this->assertSame($data[1]->key,6);
+        $this->assertCount(2,$data);
+
+        $iter = $b->iterSlice(new Slice(8, 9));
+        $data = iterator_to_array($iter);
+        $this->assertSame($data[0]->key,8);
+        $this->assertCount(1,$data);
+
+        $iter = $b->iterSlice(new Slice(9, 12));
+        $data = iterator_to_array($iter);
+        $this->assertSame($data[0]->key,9);
+        $this->assertCount(1,$data);
+
+        $iter = $b->iterSlice(new Slice(15, 17));
+        $data = iterator_to_array($iter);
+        $this->assertCount(0,$data);
+
+        $iter = $b->iterSlice(new Slice(-2, 17));
+        $data = iterator_to_array($iter);
+        $this->assertSame($data[0]->key,0);
+
+        $b->close();
+
+        # Contains from 10, 20, 30 .. 200
+        $b = BPlusTree::createFromArgs(array(
+            'filename' => FILENAME,
+            'order' => 5
+        ));
+
+        foreach (range(10, 201, 10) as $v){
+            $b->insert($v, "$v");
+        }
+
+        $iter = $b->iterSlice(new Slice(65, 85));
+
+        $data = iterator_to_array($iter);
+        $this->assertSame($data[0]->key,70);
+        $this->assertSame($data[1]->key,80);
+        $this->assertCount(2,$data);
+    }
+
 
     /**
      * @test
@@ -306,8 +437,8 @@ class TreeTest extends TestCase
     public function batchInsert()
     {
         $b = $this->buildBPlusTree();
-        $b->batchInsert(array_combine(range(0, 100),range(0, 100)));
-        $b->batchInsert(array_combine(range(101, 200),range(101, 200)));
+        $b->batchInsert(array_combine(range(0, 1000),range(0, 1000)));
+        $b->batchInsert(array_combine(range(1001, 2000),range(1001, 2000)));
 
         $i = 0;
         foreach($b->items() as $k=>$v){
@@ -316,6 +447,6 @@ class TreeTest extends TestCase
             $i += 1;
         }
 
-        $this->assertTrue( $i == 201);
+        $this->assertTrue( $i == 2001);
     }
 }
