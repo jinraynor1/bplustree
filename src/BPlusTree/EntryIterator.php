@@ -58,10 +58,10 @@ class EntryIterator extends AbstractGenerator
                     next($this->node->entries);
                     $entry = current($this->node->entries);
 
-                }while($entry->key < $this->slice->start());
+                }while($entry && $entry->key < $this->slice->start());
             }
 
-            if (!is_null($this->slice->stop()) and $entry->key >= $this->slice->stop()) {
+            if (!is_null($this->slice->stop()) and $entry && $entry->key >= $this->slice->stop()) {
                 return null;
             }
         }
@@ -70,7 +70,12 @@ class EntryIterator extends AbstractGenerator
         if (!next($this->node->entries)) {
             if ($this->node->nextPage) {
                 $this->node = $this->tree->mem->getNode($this->node->nextPage);
-                reset($this->node->entries);
+                if(!$entry){
+                    $entry = reset($this->node->entries);
+                    next($this->node->entries);
+                }else{
+                    reset($this->node->entries);
+                }
 
 
             } else {
