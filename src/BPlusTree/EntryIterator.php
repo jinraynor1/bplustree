@@ -54,7 +54,11 @@ class EntryIterator extends AbstractGenerator
 
         if ($entry) {
             if (!is_null($this->slice->start()) and $entry->key < $this->slice->start()) {
-                # continue // how to stop backwards ?
+                do{
+                    next($this->node->entries);
+                    $entry = current($this->node->entries);
+
+                }while($entry->key < $this->slice->start());
             }
 
             if (!is_null($this->slice->stop()) and $entry->key >= $this->slice->stop()) {
