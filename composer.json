@@ -28,6 +28,7 @@
   },
   "require": {
     "psr/log": "^1.1",
-    "ehough/generators": "^1.0"
+    "ehough/generators": "^1.0",
+    "th3n3rd/cartesian-product": "^0.3.0"
   }
 }

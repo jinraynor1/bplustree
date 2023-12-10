@@ -6,9 +6,11 @@ use Jinraynor1\BplusTree\Helpers\Slice;
 use Jinraynor1\BplusTree\Memory\FileMemory;
 use Jinraynor1\BplusTree\Nodes\LeafNode;
 use Jinraynor1\BplusTree\Nodes\LonelyRootNode;
+use Nerd\CartesianProduct\CartesianProduct;
 use PHPUnit\Framework\TestCase;
 use Jinraynor1\BplusTree\Exceptions\ValueError;
-
+use Jinraynor1\BplusTree\Serializer\IntegerSerializer;
+use Jinraynor1\BplusTree\Serializer\StringSerializer;
 class TreeTest extends TestCase
 {
     public function setUp()
@@ -395,6 +397,85 @@ class TreeTest extends TestCase
         $b->close();
     }
 
+
+    /**
+     * @return array
+     */
+    public function dataProviderSplitInTree()
+    {
+        $iterators = [
+            range(0, 1000, 1),
+            range(1000, 0, -1),
+            (range(0, 1000, 2)) + (range(1, 1000, 2))
+        ];
+        $orders = [3, 4, 50];
+        $page_sizes = [4096, 8192];
+        $key_sizes = [4, 16];
+        $values_sizes = [1, 16];
+        $serializer_class = [new IntegerSerializer(), new StringSerializer()];
+        $cache_sizes = [0, 50];
+        $cartesianProduct = new CartesianProduct();
+
+        $cartesianProduct
+            ->appendSet($iterators)
+            ->appendSet($orders)
+            ->appendSet($page_sizes)
+            ->appendSet($key_sizes)
+            ->appendSet($values_sizes)
+            ->appendSet($serializer_class)
+            ->appendSet($cache_sizes);
+
+        return $cartesianProduct->compute();
+    }
+
+    /**
+     * @param $iterator
+     * @param $order
+     * @param $page_size
+     * @param $k_size
+     * @param $v_size
+     * @param $serialize_class
+     * @param $cache_size
+     * @test
+     * @dataProvider dataProviderSplitInTree
+     * @throws ValueError
+     */
+    public function insertSplitInTree($iterator, $order, $page_size, $k_size, $v_size,
+                                      $serialize_class, $cache_size)
+    {
+        $inserted = array();
+        foreach ($iterator as $i) {
+            $v = "$i";
+            $k = $i;
+            if (is_a($serialize_class, StringSerializer::class)) {
+                $k = (string)$i;
+            }
+            $inserted[$k] = $v;
+        }
+
+        $b = new BPlusTree(FILENAME, $page_size, $order,
+            $k_size, $v_size, $cache_size,
+            $serialize_class);
+
+        if (sort($inserted) == $inserted) {
+            $b->batchInsert($inserted);
+        } else {
+            foreach ($inserted as $k => $v) {
+                $b->insert($k, $v);
+            }
+        }
+        # Reload tree from file before checking values
+        $b->close();
+        $b = new BPlusTree(FILENAME, $page_size, $order,
+            $k_size, $v_size, $cache_size,
+            $serialize_class);
+
+        foreach ($inserted as $k => $v) {
+            $this->assertTrue($b->get($k) == $v);
+        }
+        $b->close();
+    }
+    
     /**
      * @test
      */

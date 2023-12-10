@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7049fff70bd9582d4d4768020b4cd316",
+    "content-hash": "a54c0376a2eafb3137f0d901f4155628",
     "packages": [
         {
             "name": "ehough/generators",
@@ -97,6 +97,55 @@
                 "psr-3"
             ],
             "time": "2021-05-03T11:20:27+00:00"
+        },
+        {
+            "name": "th3n3rd/cartesian-product",
+            "version": "v0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/th3n3rd/cartesian-product.git",
+                "reference": "78b22f4feb4ef3efc1e99dfe5d932e17024b035d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/th3n3rd/cartesian-product/zipball/78b22f4feb4ef3efc1e99dfe5d932e17024b035d",
+                "reference": "78b22f4feb4ef3efc1e99dfe5d932e17024b035d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "devster/ubench": "~1.1",
+                "phpunit/phpunit": "~4.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Nerd\\CartesianProduct\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marco Garofalo",
+                    "email": "marcogarofalo.personal@gmail.com"
+                }
+            ],
+            "description": "Memory efficient Cartesian Product implementation",
+            "keywords": [
+                "cartesian",
+                "product"
+            ],
+            "time": "2015-05-30T08:42:25+00:00"
         }
     ],
     "packages-dev": [
