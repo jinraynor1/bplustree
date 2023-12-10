@@ -284,14 +284,21 @@ class MemoryTest extends \PHPUnit\Framework\TestCase
         $mockWriter->expects($this->exactly(1))->method('acquire');
         $mockWriter->expects($this->exactly(1))->method('release');
 
-        $mem->writeTransaction(function () use ($mem, $that) {
-            $mem->setNode(self::$node);
+        try {
 
-            $that->assertTrue($mem->wal->notCommitedPages == array(3 => 9));
-            $that->assertTrue($mem->wal->committedPages == array());
-            throw new ErrorException("Foo");
-        });
+            $exc = null;
+            $mem->writeTransaction(function () use ($mem, $that) {
+                $mem->setNode(self::$node);
 
+                $that->assertTrue($mem->wal->notCommitedPages == array(3 => 9));
+                $that->assertTrue($mem->wal->committedPages == array());
+                throw new ValueError("Foo");
+            });
+        } catch (ValueError $e) {
+            $exc = $e;
+        }
+
+        $this->assertTrue(is_a($exc,ValueError::class));
         $that->assertTrue($mem->wal->notCommitedPages == array());
         $that->assertTrue($mem->wal->committedPages == array());
 

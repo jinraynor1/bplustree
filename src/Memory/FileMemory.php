@@ -151,10 +151,12 @@ class FileMemory
     {
         $this->lock->getWriterLock()->acquire();
         try {
+            $exc = null;
             call_user_func($callback);
 
             $this->wal->commit();
-        } catch (ErrorException $e) {
+        } catch (ValueError $e) {
+            $exc = $e;
             # When an error happens in the middle of a write
             # transaction we must roll it back and clear the cache
             # because the writer may have partially modified the Nodes
@@ -163,7 +165,7 @@ class FileMemory
         }
 
         $this->lock->getWriterLock()->release();
-
+        if($exc) throw $exc;
 
 
     }

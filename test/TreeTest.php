@@ -530,4 +530,52 @@ class TreeTest extends TestCase
 
         $this->assertTrue( $i == 2001);
     }
+
+    /**
+     * @test
+     */
+    public function batchInsertNoInOrder()
+    {
+        $b = $this->buildBPlusTree();
+
+        try {
+            $exc = null;
+            $b->batchInsert(array(
+                2 => '2',
+                1 => '1'
+            ));
+        } catch (Exception $e) {
+            $exc = $e;
+        }
+        $this->assertTrue(is_a($exc,ValueError::class));
+        $this->assertNull($b->get(1));
+        $this->assertNull($b->get(2));
+
+        $b->insert(2,'2');
+
+        try {
+            $exc = null;
+            $b->batchInsert(array(
+                1 => '1'
+            ));
+        } catch (Exception $e) {
+            $exc = $e;
+        }
+        $this->assertTrue(is_a($exc,ValueError::class));
+
+
+
+        try {
+            $exc = null;
+            $b->batchInsert(array(
+                2 => '2'
+            ));
+        } catch (Exception $e) {
+            $exc = $e;
+        }
+        $this->assertTrue(is_a($exc,ValueError::class));
+
+        $this->assertNull($b->get(1));
+        $this->assertTrue($b->get(2) == "2");
+    }
 }
