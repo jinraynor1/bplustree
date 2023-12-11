@@ -11,8 +11,8 @@ It feels like a dict, but stored on disk. When to use it?
 - When the data needs to be persisted
 - When keeping the keys in order is important
 
-This project is under development: the format of the file may change between
-versions. Do not use as your primary source of data.
+This project is under development: the format of the file may change between versions. Do not use as your primary source
+of data.
 
 Quickstart
 ----------
@@ -35,21 +35,26 @@ Create a B+tree index stored on a file and use it with:
     //NULL
     $tree->close();
 ```
+
 Keys and values
 ---------------
 
-Keys must have a natural order. Default
-serializers for  string and integer types are provided. For example to index by string:
+Keys must have a natural order. Default serializers for string and integer types are provided. For example to index by
+string:
 
 ```php
     
 use Jinraynor1\BplusTree\BPlusTree;
 use Jinraynor1\BplusTree\Serializer\StringSerializer;
 
-$tree = BPlusTree::createFromArgs(array('filename' => '/tmp/bplustree.db', 
-        'key_size' => 16, 'serializer' => new StringSerializer()));
+$tree = BPlusTree::createFromArgs(array(
+                                        'filename' => '/tmp/bplustree.db', 
+                                        'key_size' => 16,
+                                        'serializer' => new StringSerializer()
+                                  ));
 $tree->insert('foo', b'bar');
 $data = iterator_to_array($tree->items());
+
 # $data is:
 #
 # Array
@@ -60,45 +65,44 @@ $data = iterator_to_array($tree->items());
 
 
 ```
-    
 
-Values on the other hand are always strings. They can be of arbitrary length,
-the parameter ``$value_size=128`` defines the upper bound of value sizes that
-can be stored in the tree itself. Values exceeding this limit are stored in
-overflow pages. Each overflowing value occupies at least a full page.
+Values on the other hand are always strings. They can be of arbitrary length, the parameter ``$value_size=128`` defines
+the upper bound of value sizes that can be stored in the tree itself. Values exceeding this limit are stored in overflow
+pages. Each overflowing value occupies at least a full page.
 
 Iterating
 ---------
 
-Since keys are kept in order, it is very efficient to retrieve elements in
-order:
+Since keys are kept in order, it is very efficient to retrieve elements in order:
 
-.. code:: php
- 
-    >>> foreach( $tree->items() as $key=>$value)
-    ...     echo sprintf("%d %s\n", $key, $value);
-    ...
-    1 'foo'
-    2 'bar'
+```php
+   foreach( $tree->items() as $key=>$value){
+        echo sprintf("%d %s\n", $key, $value);
+    }
+    # prints     
+    # 1 'foo'
+    # 2 'bar'
+```    
 
 It is also possible to iterate over a subset of the tree by giving a slice:
 
-.. code:: php
-    >>> use Jinraynor1\BplusTree\Helpers\Slice;
-    >>> foreach ($tree->items(new Slice($start=0, $stop=10))
-    ...     echo sprintf("%d %s\n", $key, $value);
-    ...
-    1 'foo'
-    2 'bar'
+```php
+    use Jinraynor1\BplusTree\Helpers\Slice;
+    foreach ($tree->items(new Slice($start=0, $stop=10) as $key =>$value ){
+        echo sprintf("%d %s\n", $key, $value);
+    }
+```
 
-Both methods use a generator so they don't require loading the whole content
-in memory, but copying a slice of the tree into a array is also possible:
+Both methods use a generator so they don't require loading the whole content in memory, but copying a slice of the tree
+into an array is also possible:
 
-.. code:: php
-
-    >>> iterator_to_array($tree->items(new Slice(0, 10)))
-    [[ 1 => 'foo'], [ 2=> 'bar']]
-
+```php
+    use Jinraynor1\BplusTree\Helpers\Slice;
+    $data = iterator_to_array($tree->items(new Slice(0, 10)));
+    print_r($data);
+    # prints
+    # [[ 1 => 'foo'], [ 2=> 'bar']]
+```
 
 Concurrency
 -----------
@@ -117,27 +121,23 @@ It is NOT safe to:
 Durability
 ----------
 
-A write-ahead log (WAL) is used to ensure that the data is safe. All changes
-made to the tree are appended to the WAL and only merged into the tree in an
-operation called a checkpoint, usually when the tree is closed. This approach
-is heavily inspired by other databases like SQLite.
+A write-ahead log (WAL) is used to ensure that the data is safe. All changes made to the tree are appended to the WAL
+and only merged into the tree in an operation called a checkpoint, usually when the tree is closed. This approach is
+heavily inspired by other databases like SQLite.
 
-If tree doesn't get closed properly (power outage, process killed...) the WAL
-file is merged the next time the tree is opened.
+If tree doesn't get closed properly (power outage, process killed...) the WAL file is merged the next time the tree is
+opened.
 
 Performances
 ------------
 
-Like any database, there are many knobs to finely tune the engine and get the
-best performance out of it:
+Like any database, there are many knobs to finely tune the engine and get the best performance out of it:
 
 - ``order``, or branching factor, defines how many entries each node will hold
-- ``page_size`` is the amount of bytes allocated to a node and the length of
-  read and write operations. It is best to keep it close to the block size of
-  the disk
-- ``cache_size`` to keep frequently used nodes at hand. Big caches prevent the
-  expensive operation of creating Python objects from raw pages but use more
-  memory
+- ``page_size`` is the amount of bytes allocated to a node and the length of read and write operations. It is best to
+  keep it close to the block size of the disk
+- ``cache_size`` to keep frequently used nodes at hand. Big caches prevent the expensive operation of creating Python
+  objects from raw pages but use more memory
 
 Some advices to efficiently use the tree:
 
@@ -145,8 +145,7 @@ Some advices to efficiently use the tree:
 - Insert in batch with ``$tree->batchInsert($iterator)`` instead of using
   ``$tree->insert()`` in a loop
 - Let the tree iterate for you instead of using ``$tree->get()`` in a loop
-- Use ``$tree->checkpoint()`` from time to time if you insert a lot, this will
-  prevent the WAL from growing unbounded
+- Use ``$tree->checkpoint()`` from time to time if you insert a lot, this will prevent the WAL from growing unbounded
 - Use small keys and values, set their limit and overflow values accordingly
 - Store the file and WAL on a fast disk
 
