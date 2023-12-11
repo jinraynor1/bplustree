@@ -1,6 +1,6 @@
 {
   "name": "jinraynor1/bplustree",
-  "description": "description",
+  "description": "An on-disk B+tree for PHP",
   "minimum-stability": "stable",
   "config": {
     "platform": {
