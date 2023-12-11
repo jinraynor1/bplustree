@@ -1,5 +1,5 @@
 {
-  "name": "vendor_name/bplustree",
+  "name": "jinraynor1/bplustree",
   "description": "description",
   "minimum-stability": "stable",
   "config": {
@@ -10,8 +10,8 @@
   "license": "proprietary",
   "authors": [
     {
-      "name": "JATAUJE",
-      "email": "email@example.com"
+      "name": "jimmy atauje",
+      "email": "jimmy.atauje@gmail.com"
     }
   ],
   "autoload": {
