@@ -386,7 +386,7 @@ class BPlusTree
         $this->mem->readTransaction(function () use ($that, &$rv) {
             $node = $that->rootNode();
 
-            if (is_a($node, LonelyRootNode::class)) {
+            if (is_a($node, "\\Jinraynor1\\BplusTree\\Nodes\\LonelyRootNode")) {
                 # Assume that the lonely root node is half full
                 $rv = floor($node->max_children / 2);
                 return;
@@ -467,7 +467,7 @@ class BPlusTree
     {
 
         $root_node = $this->mem->getNode($this->root_node_page);
-        assert(is_a($root_node, LonelyRootNode::class) || is_a($root_node, RootNode::class));
+        assert(is_a($root_node, "\\Jinraynor1\\BplusTree\\Nodes\\LonelyRootNode") || is_a($root_node, "\\Jinraynor1\\BplusTree\\Nodes\\RootNode"));
         return $root_node;
 
     }
@@ -475,7 +475,7 @@ class BPlusTree
     public function leftRecordNode()
     {
         $node = $this->rootNode();
-        while (!is_a($node, LonelyRootNode::class) &&  !is_a($node, LeafNode::class)) {
+        while (!is_a($node, "\\Jinraynor1\\BplusTree\\Nodes\\LonelyRootNode") &&  !is_a($node, "\\Jinraynor1\\BplusTree\\Nodes\\LeafNode")) {
             $node = $this->mem->getNode($node->smallestEntry()->getBefore());
         }
         return $node;
@@ -488,7 +488,7 @@ class BPlusTree
 
     public function searchInTree($key, $node)
     {
-        if (is_a($node, LonelyRootNode::class) || is_a($node, LeafNode::class)) {
+        if (is_a($node, "\\Jinraynor1\\BplusTree\\Nodes\\LonelyRootNode") || is_a($node, "\\Jinraynor1\\BplusTree\\Nodes\\LeafNode")) {
             return $node;
         }
 
@@ -532,7 +532,7 @@ class BPlusTree
         $ref = new Reference($this->treeConf,$new_node->smallestKey(),
             $old_node->page, $new_node->page);
 
-        if (is_a($old_node, LonelyRootNode::class)) {
+        if (is_a($old_node, "\\Jinraynor1\\BplusTree\\Nodes\\LonelyRootNode")) {
             # Convert the LonelyRoot into a Leaf
             $old_node = $old_node->convertToLeaf();
             $this->createNewRoot($ref);
@@ -562,7 +562,7 @@ class BPlusTree
         $ref->setBefore($old_node->page);
         $ref->setAfter($new_node->page);
 
-        if (is_a($old_node, RootNode::class)) {
+        if (is_a($old_node, "\\Jinraynor1\\BplusTree\\Nodes\\RootNode")) {
             # Convert the Root into an Internal
             $old_node = $old_node->convertToInternal();
             $this->createNewRoot($ref);

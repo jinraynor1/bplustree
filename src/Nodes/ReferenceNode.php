@@ -12,7 +12,7 @@ class ReferenceNode extends Node
 {
     public function __construct(TreeConf $treeConf, $data = null, $page = null, $parent = null, $nextPage = null)
     {
-        $this->entry_class = Reference::class;
+        $this->entry_class = "\\Jinraynor1\\BplusTree\\Entries\\Reference";
         parent::__construct($treeConf, $data, $page, $parent, $nextPage);
     }
 

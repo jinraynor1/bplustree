@@ -14,7 +14,7 @@ class OverflowNode extends Node
         $this->node_type_int = 5;
         $this->min_children = 1;
         $this->max_children = 1;
-        $this->entry_class = OpaqueData::class;
+        $this->entry_class = "\\Jinraynor1\\BplusTree\\Entries\\OpaqueData";
 
 
         parent::__construct($treeConf, $data, $page, null, $nextPage);
