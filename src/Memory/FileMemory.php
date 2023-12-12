@@ -267,7 +267,7 @@ class FileMemory
         )[1];
         $end_value_size = $end_key_size + OTHERS_BYTES;
         $value_size = unpack("V",
-            substr($data, $end_key_size,$end_value_size-$end_key_size),
+            substr($data, $end_key_size,$end_value_size-$end_key_size)
         )[1];
         $end_freelist_start_page = $end_value_size + PAGE_REFERENCE_BYTES;
         $this->freelist_start_page = unpack("V",
