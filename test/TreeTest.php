@@ -43,7 +43,7 @@ class TreeTest extends TestCase
     public function createAndLoadFile()
     {
         $b = new BPlusTree(FILENAME);
-        $this->assertTrue(is_a($b->mem, FileMemory::class));
+        $this->assertTrue(is_a($b->mem, "\\Jinraynor1\\BplusTree\\Memory\\FileMemory"));
         $b->insert(5, 'foo');
         $b->close();
 
@@ -54,7 +54,7 @@ class TreeTest extends TestCase
      */
     public function closingContextManager()
     {
-        $b = $this->getMockBuilder(BPlusTree::class)
+        $b = $this->getMockBuilder("\\Jinraynor1\\BplusTree\\BPlusTree")
             ->setConstructorArgs(array(FILENAME, 512, 100, 8, 128))
             ->setMethods(array('close'))->getMock();
 
@@ -388,12 +388,12 @@ class TreeTest extends TestCase
                 'order' => 3)
         );
         $this->assertTrue( $b->leftRecordNode() == $b->rootNode());
-        $this->assertTrue( is_a($b->leftRecordNode(), LonelyRootNode::class));
+        $this->assertTrue( is_a($b->leftRecordNode(), "\\Jinraynor1\\BplusTree\\Nodes\\LonelyRootNode"));
         $b->insert(1, '1');
         $b->insert(2, '2');
         $b->insert(3, '3');
 
-        $this->assertTrue( is_a($b->leftRecordNode(), LeafNode::class));
+        $this->assertTrue( is_a($b->leftRecordNode(), "\\Jinraynor1\\BplusTree\\Nodes\\LeafNode"));
         $b->close();
     }
 
@@ -447,7 +447,7 @@ class TreeTest extends TestCase
         foreach ($iterator as $i) {
             $v = "$i";
             $k = $i;
-            if (is_a($serialize_class, StringSerializer::class)) {
+            if (is_a($serialize_class, "\\Jinraynor1\\BplusTree\\Serializer\\StringSerializer")) {
                 $k = (string)$i;
             }
             $inserted[$k] = $v;
@@ -547,7 +547,7 @@ class TreeTest extends TestCase
         } catch (Exception $e) {
             $exc = $e;
         }
-        $this->assertTrue(is_a($exc,ValueError::class));
+        $this->assertTrue(is_a($exc,"\\Jinraynor1\\BplusTree\\Exceptions\\ValueError"));
         $this->assertNull($b->get(1));
         $this->assertNull($b->get(2));
 
@@ -561,7 +561,7 @@ class TreeTest extends TestCase
         } catch (Exception $e) {
             $exc = $e;
         }
-        $this->assertTrue(is_a($exc,ValueError::class));
+        $this->assertTrue(is_a($exc,"\\Jinraynor1\\BplusTree\\Exceptions\\ValueError"));
 
 
 
@@ -573,7 +573,7 @@ class TreeTest extends TestCase
         } catch (Exception $e) {
             $exc = $e;
         }
-        $this->assertTrue(is_a($exc,ValueError::class));
+        $this->assertTrue(is_a($exc,"\\Jinraynor1\\BplusTree\\Exceptions\\ValueError"));
 
         $this->assertNull($b->get(1));
         $this->assertTrue($b->get(2) == "2");

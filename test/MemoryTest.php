@@ -219,9 +219,9 @@ class MemoryTest extends \PHPUnit\Framework\TestCase
         if (!$mem)
             $mem = new FileMemory(FILENAME, self::$treeConf);
 
-        $mem->lock = $this->getMockBuilder(RWLock::class)->disableOriginalConstructor()->getMock();
-        $mockWriter = $this->getMockBuilder(WriterLock::class)->disableOriginalConstructor()->getMock();
-        $mockReader = $this->getMockBuilder(ReaderLock::class)->disableOriginalConstructor()->getMock();
+        $mem->lock = $this->getMockBuilder("\\Jinraynor1\\BplusTree\\Memory\\RWLock")->disableOriginalConstructor()->getMock();
+        $mockWriter = $this->getMockBuilder("\\Jinraynor1\\BplusTree\\Memory\\RWLocks\\WriterLock")->disableOriginalConstructor()->getMock();
+        $mockReader = $this->getMockBuilder("\\Jinraynor1\\BplusTree\\Memory\\RWLocks\\ReaderLock")->disableOriginalConstructor()->getMock();
         $mem->lock->method('getWriterLock')->willReturn($mockWriter);
         $mem->lock->method('getReaderLock')->willReturn($mockReader);
 
@@ -298,7 +298,7 @@ class MemoryTest extends \PHPUnit\Framework\TestCase
             $exc = $e;
         }
 
-        $this->assertTrue(is_a($exc,ValueError::class));
+        $this->assertTrue(is_a($exc,"\\Jinraynor1\\BplusTree\\Exceptions\\ValueError"));
         $that->assertTrue($mem->wal->notCommitedPages == array());
         $that->assertTrue($mem->wal->committedPages == array());
 

@@ -32,14 +32,14 @@ class NodeTest extends TestCase
     public function dataProviderNodeLimitChildren()
     {
         return array(
-            array(LonelyRootNode::class, 7, 0, 6),
-            array(LonelyRootNode::class, 100, 0, 99),
-            array(RootNode::class, 7, 2, 7),
-            array(RootNode::class, 100, 2, 100),
-            array(InternalNode::class, 7, 4, 7),
-            array(InternalNode::class, 100, 50, 100),
-            array(LeafNode::class, 7, 3, 6),
-            array(LeafNode::class, 100, 49, 99),
+            array("\\Jinraynor1\\BplusTree\\Nodes\\LonelyRootNode", 7, 0, 6),
+            array("\\Jinraynor1\\BplusTree\\Nodes\\LonelyRootNode", 100, 0, 99),
+            array("\\Jinraynor1\\BplusTree\\Nodes\\RootNode", 7, 2, 7),
+            array("\\Jinraynor1\\BplusTree\\Nodes\\RootNode", 100, 2, 100),
+            array("\\Jinraynor1\\BplusTree\\Nodes\\InternalNode", 7, 4, 7),
+            array("\\Jinraynor1\\BplusTree\\Nodes\\InternalNode", 100, 50, 100),
+            array("\\Jinraynor1\\BplusTree\\Nodes\\LeafNode", 7, 3, 6),
+            array("\\Jinraynor1\\BplusTree\\Nodes\\LeafNode", 100, 49, 99),
         );
     }
 
@@ -62,10 +62,10 @@ class NodeTest extends TestCase
     public function dataProviderEmptyNodeSerialization()
     {
         return array(
-            array(LeafNode::class),
-            array(InternalNode::class),
-            array(RootNode::class),
-            array(LonelyRootNode::class)
+            array("\\Jinraynor1\\BplusTree\\Nodes\\LeafNode"),
+            array("\\Jinraynor1\\BplusTree\\Nodes\\InternalNode"),
+            array("\\Jinraynor1\\BplusTree\\Nodes\\RootNode"),
+            array("\\Jinraynor1\\BplusTree\\Nodes\\LonelyRootNode")
         );
     }
 
@@ -168,7 +168,7 @@ class NodeTest extends TestCase
         $tree_conf = new TreeConf(4096, 7, 16, 16, new IntegerSerializer());
         $this->assertTrue( is_a(
             Node::fromPageData($tree_conf, $data, 4),
-            RootNode::class
+            "\\Jinraynor1\\BplusTree\\Nodes\\RootNode"
         ));
     }
 
