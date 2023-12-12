@@ -264,7 +264,7 @@ class BPlusTree
                 } catch (IndexError $e) {
                     $biggest_entry = null;
                 }
-                if ($biggest_entry and $key <= $biggest_entry->getKey())
+                if ($biggest_entry && $key <= $biggest_entry->getKey())
                     throw new  ValueError('Keys to batch insert must be sorted and ' .
                         'bigger than keys currently in the tree');
 

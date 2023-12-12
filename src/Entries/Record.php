@@ -222,7 +222,7 @@ class Record extends ComparableEntry
             return $this->data;
         }
 
-        assert(!(is_null($this->value) or is_null($this->overflowPage)));
+        assert(is_null($this->value) || is_null($this->overflowPage));
 
         $key_as_bytes = $this->treeConf->getSerializer()->serialize(
             $this->getKey(), $this->treeConf->getKeySize()

@@ -156,10 +156,10 @@ class WAL
 
     public function addFrame($frameType, $page = null, $pageData = null)
     {
-        if ($frameType == FrameType::PAGE and (!$page or !$pageData))
+        if ($frameType == FrameType::PAGE && (!$page || !$pageData))
             throw new ValueError('PAGE frame without page data');
 
-        if ($pageData and strlen($pageData) != $this->pageSize)
+        if ($pageData && strlen($pageData) != $this->pageSize)
             throw new ValueError('Page data is different from page size');
 
         if (!$page)
