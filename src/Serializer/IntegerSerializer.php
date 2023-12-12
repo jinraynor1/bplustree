@@ -11,13 +11,13 @@ class IntegerSerializer implements SerializerInterface
 
     public function serialize($value, $size)
     {
-        return Integer::toBytes($value,$size,ENDIAN);
+        return Integer::toBytes($value,$size);
     }
 
 
     public function deserialize($value)
     {
-        return  Integer::fromBytes($value,ENDIAN);
+        return  Integer::fromBytes($value);
     }
 
 }
