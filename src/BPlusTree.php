@@ -264,9 +264,9 @@ class BPlusTree
                 } catch (IndexError $e) {
                     $biggest_entry = null;
                 }
-                if ($biggest_entry && $key <= $biggest_entry->getKey())
-                    throw new  ValueError('Keys to batch insert must be sorted and ' .
-                        'bigger than keys currently in the tree');
+                if ($biggest_entry && strnatcmp($key , $biggest_entry->getKey()) <=0)
+                    throw new  ValueError(sprintf('Keys to batch insert must be sorted and ' .
+                        'bigger than keys currently in the tree, current key: %s, biggest key: %s',$key,$biggest_entry->getKey()));
 
 
                 if (strlen($value) <= $that->treeConf->getValueSize()) {
@@ -494,16 +494,16 @@ class BPlusTree
 
         $page = null;
 
-        if ($key < $node->smallestKey())
+        if (strnatcmp( $key, $node->smallestKey())<0)
             $page = $node->smallestEntry()->getBefore();
-        elseif ($node->biggestKey() <= $key)
+        elseif (strnatcmp($node->biggestKey() , $key)<=0)
             $page = $node->biggestEntry()->getAfter();
         else {
             $iterator = new PairWiseIterator($node->entries);
             foreach ($iterator as $chunk) {
                 $ref_a = $chunk[0];
                 $ref_b = $chunk[1];
-                if ($ref_a->getKey() <= $key && $key < $ref_b->getKey()) {
+                if (strnatcmp($ref_a->getKey()  ,$key)<=0 && strnatcmp($key , $ref_b->getKey())<0) {
                     $page = $ref_a->getAfter();
                     break;
                 }

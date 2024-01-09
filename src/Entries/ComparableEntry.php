@@ -15,28 +15,28 @@ abstract class ComparableEntry extends Entry
     abstract function getKey();
     public function equals($other)
     {
-        return $this->getKey() == $other->getKey();
+        return strnatcmp($this->getKey() , $other->getKey())===0;
     }
 
     public function less($other)
     {
-        return $this->getKey() < $other->getKey();
+        return strnatcmp($this->getKey() , $other->getKey())<0;
     }
 
     public function lessEquals($other)
     {
-        return $this->getKey() <= $other->getKey();
+        return strnatcmp($this->getKey() , $other->getKey())<=0;
     }
 
 
     public function greater($other)
     {
-        return $this->getKey() > $other->getKey();
+        return strnatcmp($this->getKey() , $other->getKey())>0;
     }
 
     public function greaterEquals($other)
     {
-        return $this->getKey() >= $other->getKey();
+        return strnatcmp($this->getKey() , $other->getKey())>=0;
     }
 
 }

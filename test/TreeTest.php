@@ -578,4 +578,31 @@ class TreeTest extends TestCase
         $this->assertNull($b->get(1));
         $this->assertTrue($b->get(2) == "2");
     }
+
+    /**
+     * @test
+     */
+    public function batchInsertStrings()
+    {
+        $b = $this->buildBPlusTree();
+
+        $range = range(536870918, 536870922);
+        $subRange = range(1, 100);
+        shuffle($subRange);
+        foreach ($range as $prefix) {
+            foreach ($subRange as $suffix) {
+                $list["$prefix.$suffix"] = "$prefix.$suffix";
+            }
+        }
+        ksort($list, SORT_NATURAL);
+
+        $b->batchInsert($list);
+
+        foreach ($list as $k => $v) {
+            $this->assertEquals($v, $b->get($k));
+        }
+
+        $this->assertCount(count($list),iterator_to_array($b->items()));
+
+    }
 }

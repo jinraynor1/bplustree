@@ -82,7 +82,7 @@ class Bisect
             return $arraySize;
         }
 
-        while ($leftKey < $rightKey) {
+        while (strnatcmp($leftKey , $rightKey)<0) {
             $middle = (int) (($leftKey + $rightKey) / 2);
 
             if ($value->less( $sortedArray[$middle])) {
