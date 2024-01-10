@@ -36,7 +36,7 @@ class EntryIterator extends AbstractGenerator
             throw new ValueError('Cannot iterate with a custom step');
         }
         if (!is_null($slice->start()) && !is_null($slice->stop()) and
-            $slice->start() >= $slice->stop()) {
+            strnatcmp($slice->start() , $slice->stop())>=0 ) {
             throw new ValueError('Cannot iterate backwards');
         }
 
