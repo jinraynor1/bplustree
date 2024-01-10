@@ -53,15 +53,15 @@ class EntryIterator extends AbstractGenerator
         $entry = current($this->node->entries);
 
         if ($entry) {
-            if (!is_null($this->slice->start()) && $entry->key < $this->slice->start()) {
+            if (!is_null($this->slice->start()) && strnatcmp($entry->key , $this->slice->start()) < 0) {
                 do{
                     next($this->node->entries);
                     $entry = current($this->node->entries);
 
-                }while($entry && $entry->key < $this->slice->start());
+                }while($entry && strnatcmp($entry->key , $this->slice->start()) < 0);
             }
 
-            if (!is_null($this->slice->stop()) && $entry && $entry->key >= $this->slice->stop()) {
+            if (!is_null($this->slice->stop()) && $entry && strnatcmp($entry->key , $this->slice->stop())>= 0) {
                 return null;
             }
         }
